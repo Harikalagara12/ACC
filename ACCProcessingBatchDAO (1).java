@@ -1628,12 +1628,7 @@ public class ACCProcessingBatchDAO extends DAOHelper implements ACCProcessingBat
     		queryParameters.put("baseSupplierNumber", eventPartDetails.getM_strSupplierNumber());
     		queryParameters.put("baseSupplierNumber", eventPartDetails.getM_strSupplierNumber());
 		
-    		String partColorCode = "";
-    		    // Use existing object available in this method
-    		    partColorCode = eventPartDetails.getM_strPartColorCode();
-    		// handle null safely
-    		queryParameters.put("partColorCode", 
-    		    partColorCode != null ? partColorCode.trim() : "");
+    		//REMOVED: partColorCode parameter - no longer needed as PART_COLOR_CODE removed from SQL WHERE clause
 		
     		queryParameters.put("partSectCode",eventPartDetails.getM_strPartSectionCode());
     		queryParameters.put("procSectCode",eventPartDetails.getM_strProcSectCode());
