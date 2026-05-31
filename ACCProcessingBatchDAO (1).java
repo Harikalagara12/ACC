@@ -1008,6 +1008,8 @@ public class ACCProcessingBatchDAO extends DAOHelper implements ACCProcessingBat
 				//MHC - due to multiple hierarchy change proc group needs to be removed as proc group can be changed from BOM maintenance
 				//querySB.append(" AND ACC.PROC_SECT_CODE= '" +currentEventPartDetails.getM_strProcSectCode()+"'");
 			}else if(!indicator.contains(BatchConstantsIF.ACC_APP_CONSTANTS.ACC_PART_INDICATOR.PART_COLOR_CODE_CHANGE.value())){
+				log.info("=== DEBUG: Entered else-if block (line 1018) ===");
+				log.info("PART_COLOR_CODE_CHANGE NOT in indicators - should NOT add color code to query");
 				
 				if(StringUtils.equals(baseOrCurrentEventData, "BASE")){
 					if(!previousEventPartDetails.getM_strPartColorCode().equals("")&& previousEventPartDetails.getM_strPartColorCode()!=null){
@@ -1023,6 +1025,10 @@ public class ACCProcessingBatchDAO extends DAOHelper implements ACCProcessingBat
 				//PSCC-5645 - End
 				//MHC - due to multiple hierarchy change proc group needs to be removed as proc group can be changed from BOM maintenance
 				//querySB.append(" AND ACC.PROC_SECT_CODE= '" +currentEventPartDetails.getM_strProcSectCode()+"'");
+				
+				// Add PART_SECTION_CODE filter to match ACC rules with appropriate part section
+				querySB.append(" AND ACC.PART_SECTION_CODE= '" +currentEventPartDetails.getM_strPartSectionCode()+"'");
+				log.info("Added PART_SECTION_CODE filter: " + currentEventPartDetails.getM_strPartSectionCode());
 			}else {
 				if(StringUtils.equals(baseOrCurrentEventData, "CURRENT_SAME")) {
 					//Do nothing as we have to pick up the ACC for the Same in case any and also current.
