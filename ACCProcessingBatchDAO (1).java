@@ -1009,17 +1009,21 @@ public class ACCProcessingBatchDAO extends DAOHelper implements ACCProcessingBat
 				//querySB.append(" AND ACC.PROC_SECT_CODE= '" +currentEventPartDetails.getM_strProcSectCode()+"'");
 			}else if(!indicator.contains(BatchConstantsIF.ACC_APP_CONSTANTS.ACC_PART_INDICATOR.PART_COLOR_CODE_CHANGE.value())){
 				
-				if(StringUtils.equals(baseOrCurrentEventData, "BASE")){
-					if(!previousEventPartDetails.getM_strPartColorCode().equals("")&& previousEventPartDetails.getM_strPartColorCode()!=null){
-						querySB.append(" AND ACC.PART_COLOR_CODE= '" +previousEventPartDetails.getM_strPartColorCode()+"'");
-					}
-				} else if(StringUtils.equals(baseOrCurrentEventData, "CURRENT")) {
-					if(!currentEventPartDetails.getM_strPartColorCode().equals("")&& currentEventPartDetails.getM_strPartColorCode()!=null){
-						querySB.append(" AND ACC.PART_COLOR_CODE= '" +currentEventPartDetails.getM_strPartColorCode()+"'");
-					}
-				} else if(StringUtils.equals(baseOrCurrentEventData, "CURRENT_SAME")) {
-					//Do nothing as we have to pick up the ACC for the Same in case any and also current.
-				}
+				// FIX: Removed PART_COLOR_CODE from WHERE clause to prevent duplicate ACC rows
+				// when color code changes (e.g., TYPE28 → TYPE13)
+				// Part color code is still stored in ACC record, just not used for lookup
+				
+				// ORIGINAL CODE (REMOVED):
+				// if(StringUtils.equals(baseOrCurrentEventData, "BASE")){
+				//     if(!previousEventPartDetails.getM_strPartColorCode().equals("")&& previousEventPartDetails.getM_strPartColorCode()!=null){
+				//         querySB.append(" AND ACC.PART_COLOR_CODE= '" +previousEventPartDetails.getM_strPartColorCode()+"'");
+				//     }
+				// } else if(StringUtils.equals(baseOrCurrentEventData, "CURRENT")) {
+				//     if(!currentEventPartDetails.getM_strPartColorCode().equals("")&& currentEventPartDetails.getM_strPartColorCode()!=null){
+				//         querySB.append(" AND ACC.PART_COLOR_CODE= '" +currentEventPartDetails.getM_strPartColorCode()+"'");
+				//     }
+				// }
+				
 				//PSCC-5645 - End
 				//MHC - due to multiple hierarchy change proc group needs to be removed as proc group can be changed from BOM maintenance
 				//querySB.append(" AND ACC.PROC_SECT_CODE= '" +currentEventPartDetails.getM_strProcSectCode()+"'");
