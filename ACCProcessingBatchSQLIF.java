@@ -274,7 +274,6 @@ public interface ACCProcessingBatchSQLIF {
 			" ACC.PART_NO_CURR=:partNumberCurrent AND ACC.PART_NO_BASE=:partNumberBase AND " +
 			" ACC.SUPPLIER_NO_BASE=:baseSupplierNumber AND ACC.PART_SECTION_CODE=:partSectCode " +
 			" AND ACC.PROC_SECT_CODE=:procSectCode " +
-	        " AND COALESCE(TRIM(ACC.PART_COLOR_CODE), '') = :partColorCode " +
 			" AND BASE_TGT_MODEL_DEV_CODE=:baseTgtModelDevCode AND BASE_MTC_TYPE=:baseMTCType AND BASE_MTC_OPTION='' " +
 			" AND BASE_TGT_ENG_MOD_DEV_CODE=:baseTgtModelDevCodeEngine AND BASE_ENG_MTC_TYPE=:baseMTCTypeEngine AND BASE_ENG_MTC_OPTION=''" +
 			" AND BASE_TGT_MIS_MOD_DEV_CODE=:baseTgtModelDevCodeMission AND BASE_MIS_MTC_TYPE=:baseMTCTypeMission AND BASE_MIS_MTC_OPTION=''" +
@@ -299,7 +298,6 @@ public interface ACCProcessingBatchSQLIF {
 	" ACC.PART_NO_CURR=:partNumberCurrent AND ACC.PART_NO_BASE=:partNumberBase AND " +
 	" ACC.SUPPLIER_NO_CURR=:baseSupplierNumber AND ACC.PART_SECTION_CODE=:partSectCode " +
 	" AND ACC.PROC_SECT_CODE=:procSectCode " +
-	" AND COALESCE(TRIM(ACC.PART_COLOR_CODE), '') = :partColorCode " +
 	" AND BASE_TGT_MODEL_DEV_CODE=:baseTgtModelDevCode AND BASE_MTC_TYPE=:baseMTCType AND BASE_MTC_OPTION='' " +
 	" AND BASE_TGT_ENG_MOD_DEV_CODE=:baseTgtModelDevCodeEngine AND BASE_ENG_MTC_TYPE=:baseMTCTypeEngine AND BASE_ENG_MTC_OPTION=''" +
 	" AND BASE_TGT_MIS_MOD_DEV_CODE=:baseTgtModelDevCodeMission AND BASE_MIS_MTC_TYPE=:baseMTCTypeMission AND BASE_MIS_MTC_OPTION=''" +
