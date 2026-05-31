@@ -484,6 +484,12 @@ public class ACCProcessingBatchDAO extends DAOHelper implements ACCProcessingBat
     		EnterACCEventPartDetailsDTO currentEventPartDetails, 
     		EnterACCEventPartDetailsDTO previousEventPartDetails, String typeOfMatch, String baseOrCurrentEventData) {
     	//logger.info("\n Entering method - fetchACCData() in "+CLASS_NAME);
+    	System.out.println("=== DEBUG fetchACCData START ===");
+    	System.out.println("typeOfMatch: " + typeOfMatch);
+    	System.out.println("baseOrCurrentEventData: " + baseOrCurrentEventData);
+    	System.out.println("Current Part Color Code: " + (currentEventPartDetails != null ? currentEventPartDetails.getM_strPartColorCode() : "NULL"));
+    	System.out.println("Previous Part Color Code: " + (previousEventPartDetails != null ? previousEventPartDetails.getM_strPartColorCode() : "NULL"));
+    	
     	List<Map<String,Object>> results = null;
 		StringBuilder querySB;
 		EnterACCSuppSummaryACCDataDetailsDTO enterACCSuppSummaryACCDataDetailsDTO;
@@ -605,7 +611,15 @@ public class ACCProcessingBatchDAO extends DAOHelper implements ACCProcessingBat
     		
     		//queryParameters.put("partSectCode",currentEventPartDetails.getM_strPartSectionCode());
     		log.info("query in fetchACCData -  "+querySB.toString()+" "+queryParameters);
+    		System.out.println("=== DEBUG fetchACCData QUERY ===");
+    		System.out.println("SQL: " + querySB.toString());
+    		System.out.println("Query contains PART_COLOR_CODE: " + querySB.toString().contains("PART_COLOR_CODE"));
+    		System.out.println("Parameters: " + queryParameters);
+    		
     		results = getNamedParameterJdbcTemplateObject().queryForList(replaceSchemaNames(querySB.toString()), queryParameters);
+    		
+    		System.out.println("=== DEBUG fetchACCData RESULT ===");
+    		System.out.println("Number of ACCs found: " + (results != null ? results.size() : 0));
     		
     		for(Map<String,Object> accDataObj : results){
     			enterACCSuppSummaryACCDataDetailsDTO = new EnterACCSuppSummaryACCDataDetailsDTO();
@@ -631,6 +645,9 @@ public class ACCProcessingBatchDAO extends DAOHelper implements ACCProcessingBat
     		}
     		
     	//logger.info("\n Exiting method - fetchACCData() in "+CLASS_NAME);
+    	System.out.println("=== DEBUG fetchACCData END ===");
+    	System.out.println("Total ACCs returned: " + m_lenterACCSuppSummaryACCDataDetailsDTOList.size());
+    	System.out.println("=================================");
     	return m_lenterACCSuppSummaryACCDataDetailsDTOList;
     }
     
@@ -881,6 +898,11 @@ public class ACCProcessingBatchDAO extends DAOHelper implements ACCProcessingBat
     		EnterACCEventPartDetailsDTO currentEventPartDetails, 
     		EnterACCEventPartDetailsDTO previousEventPartDetails, String currentOrBaseEvent) {//CPT-357
     	//logger.info("\n Entering method - fetchACCDataForUnMatched() in "+CLASS_NAME);
+    	System.out.println("=== DEBUG fetchACCDataForUnMatched START ===");
+    	System.out.println("currentOrBaseEvent: " + currentOrBaseEvent);
+    	System.out.println("Current Part Color Code: " + (currentEventPartDetails != null ? currentEventPartDetails.getM_strPartColorCode() : "NULL"));
+    	System.out.println("Previous Part Color Code: " + (previousEventPartDetails != null ? previousEventPartDetails.getM_strPartColorCode() : "NULL"));
+    	
     	List<Map<String,Object>> results = null;
 		StringBuilder querySB;
 		EnterACCSuppSummaryACCDataDetailsDTO enterACCSuppSummaryACCDataDetailsDTO;
@@ -928,7 +950,14 @@ public class ACCProcessingBatchDAO extends DAOHelper implements ACCProcessingBat
     		queryParameters.put("partSectCode",currentEventPartDetails.getM_strPartSectionCode());
     		queryParameters.put("currOrBaseEvent",currentOrBaseEvent);//CPT-357
     		
+    		System.out.println("=== DEBUG fetchACCDataForUnMatched QUERY ===");
+    		System.out.println("SQL: " + querySB.toString());
+    		System.out.println("Parameters: " + queryParameters);
+    		
     		results = getNamedParameterJdbcTemplateObject().queryForList(replaceSchemaNames(querySB.toString()), queryParameters);
+    		
+    		System.out.println("=== DEBUG fetchACCDataForUnMatched RESULT ===");
+    		System.out.println("Number of ACCs found: " + (results != null ? results.size() : 0));
     		
     		for(Map<String,Object> accDataObj : results){
     			enterACCSuppSummaryACCDataDetailsDTO = new EnterACCSuppSummaryACCDataDetailsDTO();
@@ -952,6 +981,9 @@ public class ACCProcessingBatchDAO extends DAOHelper implements ACCProcessingBat
     		}
     		
     	//logger.info("\n Exiting method - fetchACCDataForUnMatched() in "+CLASS_NAME);
+    	System.out.println("=== DEBUG fetchACCDataForUnMatched END ===");
+    	System.out.println("Total ACCs returned: " + m_lenterACCSuppSummaryACCDataDetailsDTOList.size());
+    	System.out.println("============================================");
     	return m_lenterACCSuppSummaryACCDataDetailsDTOList;
     }
     
@@ -959,6 +991,13 @@ public class ACCProcessingBatchDAO extends DAOHelper implements ACCProcessingBat
     		EnterACCEventPartDetailsDTO currentEventPartDetails, 
     		EnterACCEventPartDetailsDTO previousEventPartDetails, ArrayList<String> indicator, String baseOrCurrentEventData) {
     	log.info("\n Entering method - fetchACCDataForMultipleIndicatorChange() in "+CLASS_NAME);
+    	System.out.println("=== DEBUG fetchACCDataForMultipleIndicatorChange START ===");
+    	System.out.println("Indicators: " + indicator);
+    	System.out.println("baseOrCurrentEventData: " + baseOrCurrentEventData);
+    	System.out.println("Current Part Color Code: " + (currentEventPartDetails != null ? currentEventPartDetails.getM_strPartColorCode() : "NULL"));
+    	System.out.println("Previous Part Color Code: " + (previousEventPartDetails != null ? previousEventPartDetails.getM_strPartColorCode() : "NULL"));
+    	System.out.println("Indicators contains PART_COLOR_CODE_CHANGE: " + indicator.contains(BatchConstantsIF.ACC_APP_CONSTANTS.ACC_PART_INDICATOR.PART_COLOR_CODE_CHANGE.value()));
+    	
     	List<Map<String,Object>> results = null;
 		StringBuilder querySB;
 		EnterACCSuppSummaryACCDataDetailsDTO enterACCSuppSummaryACCDataDetailsDTO;
@@ -1009,21 +1048,30 @@ public class ACCProcessingBatchDAO extends DAOHelper implements ACCProcessingBat
 				//querySB.append(" AND ACC.PROC_SECT_CODE= '" +currentEventPartDetails.getM_strProcSectCode()+"'");
 			}else if(!indicator.contains(BatchConstantsIF.ACC_APP_CONSTANTS.ACC_PART_INDICATOR.PART_COLOR_CODE_CHANGE.value())){
 				
-				if(StringUtils.equals(baseOrCurrentEventData, "BASE")){
-					if(!previousEventPartDetails.getM_strPartColorCode().equals("")&& previousEventPartDetails.getM_strPartColorCode()!=null){
-						querySB.append(" AND ACC.PART_COLOR_CODE= '" +previousEventPartDetails.getM_strPartColorCode()+"'");
-					}
-				} else if(StringUtils.equals(baseOrCurrentEventData, "CURRENT")) {
-					if(!currentEventPartDetails.getM_strPartColorCode().equals("")&& currentEventPartDetails.getM_strPartColorCode()!=null){
-						querySB.append(" AND ACC.PART_COLOR_CODE= '" +currentEventPartDetails.getM_strPartColorCode()+"'");
-					}
-				} else if(StringUtils.equals(baseOrCurrentEventData, "CURRENT_SAME")) {
-					//Do nothing as we have to pick up the ACC for the Same in case any and also current.
-				}
+				System.out.println("=== DEBUG: Entered else-if block (line 1018) ===");
+				System.out.println("PART_COLOR_CODE_CHANGE NOT in indicators - should NOT add color code to query");
+				
+				// FIX: Removed PART_COLOR_CODE from WHERE clause to prevent duplicate ACC rows
+				// when color code changes (e.g., TYPE28 → TYPE13)
+				// Part color code is still stored in ACC record, just not used for lookup
+				
+				// ORIGINAL CODE (REMOVED):
+				// if(StringUtils.equals(baseOrCurrentEventData, "BASE")){
+				//     if(!previousEventPartDetails.getM_strPartColorCode().equals("")&& previousEventPartDetails.getM_strPartColorCode()!=null){
+				//         querySB.append(" AND ACC.PART_COLOR_CODE= '" +previousEventPartDetails.getM_strPartColorCode()+"'");
+				//     }
+				// } else if(StringUtils.equals(baseOrCurrentEventData, "CURRENT")) {
+				//     if(!currentEventPartDetails.getM_strPartColorCode().equals("")&& currentEventPartDetails.getM_strPartColorCode()!=null){
+				//         querySB.append(" AND ACC.PART_COLOR_CODE= '" +currentEventPartDetails.getM_strPartColorCode()+"'");
+				//     }
+				// }
+				
 				//PSCC-5645 - End
 				//MHC - due to multiple hierarchy change proc group needs to be removed as proc group can be changed from BOM maintenance
 				//querySB.append(" AND ACC.PROC_SECT_CODE= '" +currentEventPartDetails.getM_strProcSectCode()+"'");
 			}else {
+				System.out.println("=== DEBUG: Entered else block (line 1032) ===");
+				System.out.println("PART_COLOR_CODE_CHANGE IS in indicators");
 				if(StringUtils.equals(baseOrCurrentEventData, "CURRENT_SAME")) {
 					//Do nothing as we have to pick up the ACC for the Same in case any and also current.
 				} else {
@@ -1078,7 +1126,15 @@ public class ACCProcessingBatchDAO extends DAOHelper implements ACCProcessingBat
     		
     		//queryParameters.put("partSectCode",currentEventPartDetails.getM_strPartSectionCode());
     		log.info("fetchACCDataForMultipleIndicatorChange query -"+querySB.toString()+" params -"+queryParameters);
+    		System.out.println("=== DEBUG fetchACCDataForMultipleIndicatorChange QUERY ===");
+    		System.out.println("SQL: " + querySB.toString());
+    		System.out.println("Query contains PART_COLOR_CODE: " + querySB.toString().contains("PART_COLOR_CODE"));
+    		System.out.println("Parameters: " + queryParameters);
+    		
     		results = getNamedParameterJdbcTemplateObject().queryForList(replaceSchemaNames(querySB.toString()), queryParameters);
+    		
+    		System.out.println("=== DEBUG fetchACCDataForMultipleIndicatorChange RESULT ===");
+    		System.out.println("Number of ACCs found: " + (results != null ? results.size() : 0));
     		
     		for(Map<String,Object> accDataObj : results){
     			enterACCSuppSummaryACCDataDetailsDTO = new EnterACCSuppSummaryACCDataDetailsDTO();
@@ -1101,6 +1157,9 @@ public class ACCProcessingBatchDAO extends DAOHelper implements ACCProcessingBat
     		}
     		
     	log.info("\n Exiting method - fetchACCDataForMultipleIndicatorChange() in "+CLASS_NAME);
+    	System.out.println("=== DEBUG fetchACCDataForMultipleIndicatorChange END ===");
+    	System.out.println("Total ACCs returned: " + m_lenterACCSuppSummaryACCDataDetailsDTOList.size());
+    	System.out.println("=========================================================");
     	return m_lenterACCSuppSummaryACCDataDetailsDTOList;
     }
     
@@ -1543,6 +1602,10 @@ public class ACCProcessingBatchDAO extends DAOHelper implements ACCProcessingBat
     public ArrayList<EnterACCSuppSummaryACCDataDetailsDTO> fetchACCDataForProcChangePartAddedDropped(EnterACCApplicationsSuppMTOSummaryDVO enterACCApplicationsSuppMTOSummaryDVO, 
     		EnterACCEventPartDetailsDTO eventPartDetails, EnterACCSuppFEMDMTODTO femdDTO, String baseOrCurrentEventData) {
     	log.info("\n Entering method - fetchACCDataForProcChangePartAddedDropped() in "+CLASS_NAME);
+    	System.out.println("=== DEBUG fetchACCDataForProcChangePartAddedDropped START ===");
+    	System.out.println("baseOrCurrentEventData: " + baseOrCurrentEventData);
+    	System.out.println("Part Color Code: " + (eventPartDetails != null ? eventPartDetails.getM_strPartColorCode() : "NULL"));
+    	
     	List<Map<String,Object>> results = null;
 		StringBuilder querySB;
 		EnterACCSuppSummaryACCDataDetailsDTO enterACCSuppSummaryACCDataDetailsDTO;
@@ -1639,7 +1702,15 @@ public class ACCProcessingBatchDAO extends DAOHelper implements ACCProcessingBat
     		queryParameters.put("procSectCode",eventPartDetails.getM_strProcSectCode());
     		//queryParameters.put("isBaseCurrent",(StringUtils.equals(baseOrCurrentEventData, "BASE") ? "B" : "C"));
     		log.info("query & parameters - "+querySB.toString()+" params - "+queryParameters);
+    		System.out.println("=== DEBUG fetchACCDataForProcChangePartAddedDropped QUERY ===");
+    		System.out.println("SQL: " + querySB.toString());
+    		System.out.println("Query contains PART_COLOR_CODE: " + querySB.toString().contains("PART_COLOR_CODE"));
+    		System.out.println("Parameters: " + queryParameters);
+    		
     		results = getNamedParameterJdbcTemplateObject().queryForList(replaceSchemaNames(querySB.toString()), queryParameters);
+    		
+    		System.out.println("=== DEBUG fetchACCDataForProcChangePartAddedDropped RESULT ===");
+    		System.out.println("Number of ACCs found: " + (results != null ? results.size() : 0));
     		
     		for(Map<String,Object> accDataObj : results){
     			enterACCSuppSummaryACCDataDetailsDTO = new EnterACCSuppSummaryACCDataDetailsDTO();
@@ -1661,6 +1732,9 @@ public class ACCProcessingBatchDAO extends DAOHelper implements ACCProcessingBat
     		}
     		
     	log.info("\n Exiting method - fetchACCDataForProcChangePartAddedDropped() in "+CLASS_NAME);
+    	System.out.println("=== DEBUG fetchACCDataForProcChangePartAddedDropped END ===");
+    	System.out.println("Total ACCs returned: " + m_lenterACCSuppSummaryACCDataDetailsDTOList.size());
+    	System.out.println("=============================================================");
     	return m_lenterACCSuppSummaryACCDataDetailsDTOList;
     }
     
